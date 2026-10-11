@@ -1,0 +1,1467 @@
+<!DOCTYPE html>
+<html lang="bn" class="dark">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Md Tamim Sifatullah — Life OS & Productivity Portal</title>
+  
+  <!-- Tailwind CSS -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  
+  <!-- Chart.js -->
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  
+  <!-- Font Awesome Icons -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  
+  <!-- Modern Google Fonts: Plus Jakarta Sans, Hind Siliguri, JetBrains Mono -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Hind+Siliguri:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;700&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=Rubik:wght@400;500;700&display=swap" rel="stylesheet">
+
+  <!-- Global Fallback Function defined before DOM elements load -->
+  <script>
+    function handleImageFallback(imgElement) {
+      if (!imgElement) return;
+      imgElement.onerror = null; // Prevent recurrent loop
+      try {
+        const stored = localStorage.getItem('tamim_avatar_custom');
+        if (stored) {
+          imgElement.src = stored;
+          return;
+        }
+      } catch (err) {
+        console.warn('Storage read failed:', err);
+      }
+      // Reliable high-contrast default avatar
+      imgElement.src = "https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?auto=format&fit=crop&w=400&q=80";
+    }
+  </script>
+
+  <style>
+    :root {
+      --font-primary: 'Plus Jakarta Sans', 'Hind Siliguri', sans-serif;
+    }
+    body {
+      font-family: var(--font-primary);
+      background-color: #070b14;
+      color: #f1f5f9;
+    }
+    .mono {
+      font-family: 'JetBrains Mono', monospace;
+    }
+    .glass-panel {
+      background: rgba(15, 23, 42, 0.72);
+      backdrop-filter: blur(16px);
+      -webkit-backdrop-filter: blur(16px);
+      border: 1px solid rgba(255, 255, 255, 0.07);
+    }
+    .glass-panel-glow {
+      background: rgba(15, 23, 42, 0.85);
+      backdrop-filter: blur(20px);
+      border: 1px solid rgba(16, 185, 129, 0.25);
+      box-shadow: 0 0 30px rgba(16, 185, 129, 0.12);
+    }
+    .neon-border-emerald {
+      box-shadow: 0 0 15px rgba(16, 185, 129, 0.25);
+    }
+    /* Custom Scrollbar */
+    ::-webkit-scrollbar {
+      width: 6px;
+      height: 6px;
+    }
+    ::-webkit-scrollbar-track {
+      background: #090e1a;
+    }
+    ::-webkit-scrollbar-thumb {
+      background: #1e293b;
+      border-radius: 4px;
+    }
+    ::-webkit-scrollbar-thumb:hover {
+      background: #334155;
+    }
+  </style>
+</head>
+<body class="selection:bg-emerald-500 selection:text-white min-h-screen pb-12">
+
+  <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-6 space-y-6">
+
+    <!-- Top Executive Header & Profile Bar -->
+    <header class="glass-panel rounded-3xl p-5 md:p-7 shadow-2xl relative overflow-hidden">
+      <!-- Ambient Glow Behind Header -->
+      <div class="absolute -top-24 -right-24 w-72 h-72 bg-emerald-500/10 rounded-full blur-3xl pointer-events-none"></div>
+      <div class="absolute -bottom-24 -left-24 w-72 h-72 bg-indigo-500/10 rounded-full blur-3xl pointer-events-none"></div>
+
+      <div class="relative z-10 flex flex-col md:flex-row items-center justify-between gap-6">
+        
+        <!-- Profile Identity Block -->
+        <div class="flex flex-col sm:flex-row items-center gap-5 text-center sm:text-left">
+          
+          <!-- Avatar Container with User's Photo (2.jpg) -->
+          <div class="relative group cursor-pointer" onclick="triggerAvatarUpload()" title="Click to update avatar picture">
+            <div class="w-24 h-24 sm:w-28 sm:h-28 rounded-2xl overflow-hidden ring-4 ring-emerald-500/40 p-0.5 bg-slate-800 shadow-xl neon-border-emerald transition-transform group-hover:scale-105 duration-300">
+              <img id="userAvatar" src="2.jpg" alt="Md Tamim Sifatullah" 
+                   class="w-full h-full object-cover rounded-xl"
+                   onerror="if (typeof handleImageFallback === 'function') { handleImageFallback(this); } else { this.onerror = null; this.src = 'https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?auto=format&fit=crop&w=400&q=80'; }" />
+            </div>
+            <!-- Online Status Dot -->
+            <span class="absolute bottom-1 right-1 flex h-4 w-4">
+              <span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75"></span>
+              <span class="relative inline-flex rounded-full h-4 w-4 bg-emerald-500 border-2 border-slate-900"></span>
+            </span>
+            <!-- Hidden Image Input for convenience -->
+            <input type="file" id="avatarFileInput" accept="image/*" class="hidden" onchange="uploadCustomAvatar(event)">
+          </div>
+
+          <!-- Name & Academic Credential -->
+          <div>
+            <div class="flex flex-wrap items-center justify-center sm:justify-start gap-2 mb-1">
+              <h1 id="uiUserName" class="text-2xl sm:text-3xl font-extrabold tracking-tight text-white">
+                তামিম সিফাতুল্লাহ
+              </h1>
+              <span class="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-semibold bg-emerald-500/15 text-emerald-400 border border-emerald-500/30">
+                <i class="fa-solid fa-graduation-cap"></i> CSE 1st Year
+              </span>
+            </div>
+            
+            <p id="uiRoleTitle" class="text-slate-300 text-sm font-medium">
+              কম্পিউটার সায়েন্স বিভাগ • ইউনিভার্সিটি ডর্ম
+            </p>
+            
+            <div class="flex flex-wrap items-center justify-center sm:justify-start gap-4 mt-2 text-xs text-slate-400">
+              <span class="flex items-center gap-1.5"><i class="fa-solid fa-location-dot text-rose-400"></i> <span id="uiLocation">সেইন্ট পিটার্সবার্গ, রাশিয়া</span></span>
+              <span class="flex items-center gap-1.5"><i class="fa-solid fa-moon text-indigo-400"></i> <span id="uiSleepBadge">প্রতিদিন ৮ ঘণ্টা গভীর ঘুম</span></span>
+              <span class="flex items-center gap-1.5"><i class="fa-solid fa-utensils text-amber-400"></i> <span id="uiMealBadge">৩ দিন মিল প্রেপ</span></span>
+            </div>
+          </div>
+        </div>
+
+        <!-- Controls: Language Switcher & Realtime Clock -->
+        <div class="flex flex-col sm:flex-row items-center gap-4 w-full md:w-auto">
+          
+          <!-- 3-Language Selector -->
+          <div class="flex items-center bg-slate-900/90 p-1.5 rounded-2xl border border-slate-800 shadow-inner">
+            <button onclick="setLanguage('bn')" id="btnLangBn" class="px-3.5 py-1.5 rounded-xl text-xs font-bold transition flex items-center gap-1.5 bg-emerald-500 text-slate-950 shadow-md">
+              <span>🇧🇩</span> <span>বাংলা</span>
+            </button>
+            <button onclick="setLanguage('en')" id="btnLangEn" class="px-3.5 py-1.5 rounded-xl text-xs font-semibold text-slate-400 hover:text-white transition flex items-center gap-1.5">
+              <span>🇬🇧</span> <span>EN</span>
+            </button>
+            <button onclick="setLanguage('ru')" id="btnLangRu" class="px-3.5 py-1.5 rounded-xl text-xs font-semibold text-slate-400 hover:text-white transition flex items-center gap-1.5">
+              <span>🇷🇺</span> <span>RU</span>
+            </button>
+          </div>
+
+          <!-- Live Digital Clock & Date -->
+          <div class="bg-slate-900/80 border border-slate-800/80 px-5 py-2.5 rounded-2xl text-center md:text-right min-w-[170px]">
+            <div id="liveClockDisplay" class="text-2xl font-bold mono tracking-wider text-emerald-400">00:00:00</div>
+            <div id="liveDateDisplay" class="text-[11px] text-slate-400 font-medium">সোমবার, ১২ অক্টোবর</div>
+          </div>
+        </div>
+
+      </div>
+    </header>
+
+    <!-- Real-time Active Shift Monitor -->
+    <section class="glass-panel-glow rounded-3xl p-6 relative overflow-hidden">
+      <div class="flex flex-col md:flex-row justify-between items-start md:items-center gap-6">
+        
+        <!-- Current Live Status -->
+        <div class="space-y-1.5">
+          <div class="flex items-center gap-2">
+            <span class="relative flex h-3 w-3">
+              <span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75"></span>
+              <span class="relative inline-flex rounded-full h-3 w-3 bg-emerald-500"></span>
+            </span>
+            <span id="uiLiveTag" class="text-xs uppercase font-extrabold tracking-widest text-emerald-400">
+              বর্তমান চলমান কার্যক্রম (LIVE MONITOR)
+            </span>
+          </div>
+          <h2 id="currentTaskTitle" class="text-2xl sm:text-3xl font-extrabold text-white">
+            নির্ধারিত কার্যক্রম লোড হচ্ছে...
+          </h2>
+          <p id="currentTaskDetails" class="text-sm text-slate-300 max-w-2xl font-medium">
+            সিস্টেম সময় বিশ্লেষণ করছে...
+          </p>
+        </div>
+
+        <!-- Next Shift Preview Card -->
+        <div class="bg-slate-950/60 border border-slate-800 p-4 rounded-2xl flex items-center gap-4 min-w-[260px] shadow-lg">
+          <div class="w-12 h-12 rounded-xl bg-slate-900 flex items-center justify-center text-emerald-400 text-lg border border-slate-800">
+            <i class="fa-solid fa-angles-right"></i>
+          </div>
+          <div>
+            <span id="uiNextShiftLabel" class="text-[11px] uppercase font-bold tracking-wider text-slate-400 block">
+              পরবর্তী শিফট
+            </span>
+            <span id="nextTaskTitle" class="text-sm font-bold text-slate-100 block mt-0.5">-</span>
+            <span id="nextTaskTime" class="text-xs font-semibold mono text-emerald-400 mt-0.5 block">-</span>
+          </div>
+        </div>
+
+      </div>
+    </section>
+
+    <!-- Weekly Metrics Stat Grid (Exact 168h Allocation) -->
+    <section class="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-3.5">
+      <!-- 1. Sleep: 56 Hours Guaranteed (8h x 7) -->
+      <div class="glass-panel p-4 rounded-2xl border-t-2 border-t-indigo-500 hover:scale-[1.02] transition-all">
+        <div class="flex items-center justify-between text-indigo-400 mb-2">
+          <span class="text-xs font-semibold" id="cardSleepLabel">ঘুম (৮ ঘ./দিন)</span>
+          <i class="fa-solid fa-bed text-sm"></i>
+        </div>
+        <div class="text-2xl font-extrabold mono text-white">৫৬ <span class="text-xs font-normal text-slate-400">ঘণ্টা</span></div>
+        <div class="text-[11px] text-emerald-400 mt-1 font-medium" id="cardSleepSub">১০০% রিকভারি নিশ্চিত</div>
+      </div>
+
+      <!-- 2. Self Study: 28 Hours Focused -->
+      <div class="glass-panel p-4 rounded-2xl border-t-2 border-t-emerald-500 hover:scale-[1.02] transition-all">
+        <div class="flex items-center justify-between text-emerald-400 mb-2">
+          <span class="text-xs font-semibold" id="cardStudyLabel">সেলফ স্টাডি</span>
+          <i class="fa-solid fa-laptop-code text-sm"></i>
+        </div>
+        <div class="text-2xl font-extrabold mono text-white">২৮ <span class="text-xs font-normal text-slate-400">ঘণ্টা</span></div>
+        <div class="text-[11px] text-slate-400 mt-1 font-medium" id="cardStudySub">ডিপ কোডিং ও ম্যাথ</div>
+      </div>
+
+      <!-- 3. Work Shift: 29 Hours -->
+      <div class="glass-panel p-4 rounded-2xl border-t-2 border-t-rose-500 hover:scale-[1.02] transition-all">
+        <div class="flex items-center justify-between text-rose-400 mb-2">
+          <span class="text-xs font-semibold" id="cardWorkLabel">জব শিফট</span>
+          <i class="fa-solid fa-briefcase text-sm"></i>
+        </div>
+        <div class="text-2xl font-extrabold mono text-white">২৯ <span class="text-xs font-normal text-slate-400">ঘণ্টা</span></div>
+        <div class="text-[11px] text-slate-400 mt-1 font-medium" id="cardWorkSub">মঙ্গল, শনি ও রবিবার</div>
+      </div>
+
+      <!-- 4. University Classes: 8.5 Hours -->
+      <div class="glass-panel p-4 rounded-2xl border-t-2 border-t-amber-500 hover:scale-[1.02] transition-all">
+        <div class="flex items-center justify-between text-amber-400 mb-2">
+          <span class="text-xs font-semibold" id="cardClassLabel">ভার্সিটি ক্লাস</span>
+          <i class="fa-solid fa-graduation-cap text-sm"></i>
+        </div>
+        <div class="text-2xl font-extrabold mono text-white">৮.৫ <span class="text-xs font-normal text-slate-400">ঘণ্টা</span></div>
+        <div class="text-[11px] text-slate-400 mt-1 font-medium" id="cardClassSub">মঙ্গল, বৃহস্পতি, শুক্র</div>
+      </div>
+
+      <!-- 5. Commute: 11.5 Hours -->
+      <div class="glass-panel p-4 rounded-2xl border-t-2 border-t-sky-500 hover:scale-[1.02] transition-all">
+        <div class="flex items-center justify-between text-sky-400 mb-2">
+          <span class="text-xs font-semibold" id="cardTravelLabel">যাতায়াত</span>
+          <i class="fa-solid fa-bus text-sm"></i>
+        </div>
+        <div class="text-2xl font-extrabold mono text-white">১১.৫ <span class="text-xs font-normal text-slate-400">ঘণ্টা</span></div>
+        <div class="text-[11px] text-slate-400 mt-1 font-medium" id="cardTravelSub">ডর্ম ↔ ক্যাম্পাস/কাজ</div>
+      </div>
+
+      <!-- 6. Meal Prep: 6 Hours -->
+      <div class="glass-panel p-4 rounded-2xl border-t-2 border-t-purple-500 hover:scale-[1.02] transition-all">
+        <div class="flex items-center justify-between text-purple-400 mb-2">
+          <span class="text-xs font-semibold" id="cardCookLabel">মিল প্রেপ (রান্না)</span>
+          <i class="fa-solid fa-kitchen-set text-sm"></i>
+        </div>
+        <div class="text-2xl font-extrabold mono text-white">৬ <span class="text-xs font-normal text-slate-400">ঘণ্টা</span></div>
+        <div class="text-[11px] text-purple-400 mt-1 font-medium" id="cardCookSub">সপ্তাহে ৩ দিন ব্যাচ রান্না</div>
+      </div>
+    </section>
+
+    <!-- Main Interactive Grid: Left (7 Cols - Schedule & Checklist), Right (5 Cols - Charts & Notes) -->
+    <main class="grid grid-cols-1 lg:grid-cols-12 gap-6">
+
+      <!-- Left Column: Daily Planner & Accountability Follow-up -->
+      <div class="lg:col-span-7 space-y-6">
+
+        <!-- Day Selector Pill Tabs -->
+        <div class="glass-panel p-2 rounded-2xl border border-slate-800 overflow-x-auto">
+          <div class="flex gap-2 min-w-max" id="dayTabsContainer">
+            <!-- Rendered by JS for multi-language support -->
+          </div>
+        </div>
+
+        <!-- Accountability Checklist / Follow-up System -->
+        <div class="glass-panel rounded-3xl p-6 border border-slate-800 space-y-5">
+          <div class="flex flex-col sm:flex-row justify-between sm:items-center gap-3 pb-3 border-b border-slate-800">
+            <div>
+              <h3 id="uiChecklistHeading" class="text-lg font-bold text-white flex items-center gap-2">
+                <i class="fa-solid fa-list-check text-emerald-400"></i> দৈনিক ফলোআপ ট্র্যাকার
+              </h3>
+              <p id="uiChecklistSubtitle" class="text-xs text-slate-400 mt-0.5">
+                কাজ সম্পন্ন হলে টিক দিন (ব্রাউজারে সেভ থাকবে)
+              </p>
+            </div>
+            
+            <!-- Quick Actions & Percentage Badge -->
+            <div class="flex items-center gap-3">
+              <button onclick="resetDayChecks()" class="text-xs px-2.5 py-1 rounded-lg bg-slate-800 hover:bg-slate-700 text-slate-300 font-medium transition" id="uiResetBtn">
+                <i class="fa-solid fa-rotate-left mr-1"></i> রিসেট
+              </button>
+              <div class="text-right">
+                <span id="progressPercentBadge" class="text-xl font-bold mono text-emerald-400">0%</span>
+                <span id="uiDoneLabel" class="text-[10px] text-slate-400 uppercase font-semibold block">সম্পন্ন</span>
+              </div>
+            </div>
+          </div>
+
+          <!-- Animated Progress Bar -->
+          <div class="w-full bg-slate-950 h-3 rounded-full overflow-hidden p-0.5 border border-slate-800">
+            <div id="progressBarFill" class="bg-gradient-to-r from-emerald-500 via-teal-400 to-cyan-400 h-full w-0 rounded-full transition-all duration-500"></div>
+          </div>
+
+          <!-- Dynamic Task Checklist -->
+          <div id="checklistItemsList" class="space-y-2.5 max-h-[380px] overflow-y-auto pr-1">
+            <!-- Dynamically populated -->
+          </div>
+        </div>
+
+        <!-- 24-Hour Timeline Visualizer -->
+        <div class="glass-panel rounded-3xl p-6 border border-slate-800">
+          <div class="flex justify-between items-center mb-4">
+            <div>
+              <h3 id="timelineHeaderTitle" class="text-lg font-bold text-white">
+                দিনের পুঙ্খানুপুঙ্খ টাইমলাইন
+              </h3>
+              <span id="timelineHeaderSub" class="text-xs text-slate-400">সময়সূচি ও কার্যক্রম বিন্যাস</span>
+            </div>
+            <span id="timelineItemCount" class="text-xs font-semibold mono px-3 py-1 rounded-full bg-slate-900 border border-slate-800 text-slate-300">
+              ১০টি সেশন
+            </span>
+          </div>
+
+          <div id="timelineCardsList" class="space-y-3 max-h-[460px] overflow-y-auto pr-1">
+            <!-- Dynamically rendered timeline items -->
+          </div>
+        </div>
+
+      </div>
+
+      <!-- Right Column: Visual Charts & Analytics (Chart.js) + Notes -->
+      <div class="lg:col-span-5 space-y-6">
+
+        <!-- Chart 1: 168-Hour Weekly Allocation (Doughnut) -->
+        <div class="glass-panel rounded-3xl p-6 border border-slate-800">
+          <div class="flex items-center justify-between mb-2">
+            <h3 id="chart1Title" class="text-base font-bold text-white flex items-center gap-2">
+              <i class="fa-solid fa-chart-pie text-cyan-400"></i> সাপ্তাহিক ১৬৮ ঘণ্টা বণ্টন
+            </h3>
+            <span class="text-xs text-emerald-400 mono font-semibold">১৬৮ ঘ./সপ্তাহ</span>
+          </div>
+          <p id="chart1Sub" class="text-xs text-slate-400 mb-4">
+            ৮ ঘণ্টা ঘুম, সেলফ স্টাডি, কাজ ও ক্লাসের সম্পূর্ণ অনুপাত
+          </p>
+          <div class="relative h-64 flex items-center justify-center">
+            <canvas id="weeklyDistributionCanvas"></canvas>
+          </div>
+        </div>
+
+        <!-- Chart 2: Daily Focus Comparison (Stacked / Grouped Bar) -->
+        <div class="glass-panel rounded-3xl p-6 border border-slate-800">
+          <div class="flex items-center justify-between mb-2">
+            <h3 id="chart2Title" class="text-base font-bold text-white flex items-center gap-2">
+              <i class="fa-solid fa-chart-simple text-amber-400"></i> দিনভিত্তিক লোড বিশ্লেষণ
+            </h3>
+            <span class="text-xs text-slate-400 mono">স্টাডি vs জব vs ক্লাস</span>
+          </div>
+          <p id="chart2Sub" class="text-xs text-slate-400 mb-4">
+            সোম থেকে রবিবার প্রতিদিনের কার্যভারের তুলনামূলক গ্রাফ
+          </p>
+          <div class="relative h-60">
+            <canvas id="dailyLoadCanvas"></canvas>
+          </div>
+        </div>
+
+        <!-- Daily Reflection & Accountability Notes Card -->
+        <div class="glass-panel rounded-3xl p-6 border border-slate-800 space-y-3">
+          <div class="flex items-center justify-between">
+            <h3 id="uiNotesTitle" class="text-sm font-bold text-white flex items-center gap-2">
+              <i class="fa-solid fa-pen-fancy text-emerald-400"></i> আজকের আত্মমূল্যায়ন নোট
+            </h3>
+            <span class="text-[11px] text-slate-400 mono" id="uiNotesSavedStatus">অটো-সেভ সক্রিয়</span>
+          </div>
+          
+          <textarea id="dailyNotesInput" rows="3" 
+            placeholder="আজকের দিনটি কেমন কাটল? অ্যালগরিদম বা ল্যাবে কী শিখলেন? এখানে লিখে রাখুন..." 
+            class="w-full bg-slate-950/80 border border-slate-800 rounded-2xl p-3.5 text-xs md:text-sm text-slate-200 placeholder-slate-500 focus:outline-none focus:border-emerald-500 transition"></textarea>
+          
+          <div class="flex justify-between items-center pt-1">
+            <div id="toastMessage" class="text-xs text-emerald-400 font-semibold opacity-0 transition-opacity flex items-center gap-1.5">
+              <i class="fa-solid fa-check"></i> <span id="uiToastText">নোট সফলভাবে সংরক্ষিত হয়েছে!</span>
+            </div>
+            <button onclick="saveDailyNote()" class="bg-emerald-600 hover:bg-emerald-500 text-slate-950 font-bold text-xs px-4 py-2 rounded-xl transition flex items-center gap-2 shadow-lg shadow-emerald-600/20">
+              <i class="fa-solid fa-floppy-disk"></i> <span id="uiSaveBtn">সেভ করুন</span>
+            </button>
+          </div>
+        </div>
+
+      </div>
+
+    </main>
+
+  </div>
+
+  <script>
+    /* Multi-Language Translation Dictionaries: bn, en, ru */
+    const translations = {
+      bn: {
+        userName: "তামিম সিফাতুল্লাহ",
+        roleTitle: "কম্পিউটার সায়েন্স ও ইঞ্জিনিয়ারিং (১ম বর্ষ) • ডর্ম রেসিডেন্ট",
+        location: "সেইন্ট পিটার্সবার্গ, রাশিয়া",
+        sleepBadge: "প্রতিদিন ৮ ঘণ্টা গভীর ঘুম",
+        mealBadge: "৩ দিন মিল প্রেপ (রান্না)",
+        liveTag: "বর্তমান চলমান কার্যক্রম (LIVE MONITOR)",
+        nextShiftLabel: "পরবর্তী শিফট",
+        cardSleepLabel: "ঘুম (৮ ঘ./দিন)",
+        cardSleepSub: "১০০% রিকভারি নিশ্চিত",
+        cardStudyLabel: "সেলফ স্টাডি",
+        cardStudySub: "ডিপ কোডিং ও ম্যাথ",
+        cardWorkLabel: "জব শিফট",
+        cardWorkSub: "মঙ্গল, শনি ও রবিবার",
+        cardClassLabel: "ভার্সিটি ক্লাস",
+        cardClassSub: "মঙ্গল, বৃহস্পতি, শুক্র",
+        cardTravelLabel: "যাতায়াত",
+        cardTravelSub: "ডর্ম ↔ ক্যাম্পাস/কাজ",
+        cardCookLabel: "মিল প্রেপ (রান্না)",
+        cardCookSub: "সপ্তাহে ৩ দিন ব্যাচ রান্না",
+        checklistHeading: "দৈনিক ফলোআপ ট্র্যাকার",
+        checklistSubtitle: "কাজ সম্পন্ন হলে টিক দিন (ব্রাউজারে সেভ থাকবে)",
+        resetBtn: "রিসেট",
+        doneLabel: "সম্পন্ন",
+        timelineHeaderTitle: "দিনের পুঙ্খানুপুঙ্খ টাইমলাইন",
+        timelineHeaderSub: "সময়সূচি ও কার্যক্রম বিন্যাস",
+        sessionCountSuffix: "টি সেশন",
+        chart1Title: "সাপ্তাহিক ১৬৮ ঘণ্টা বণ্টন",
+        chart1Sub: "৮ ঘণ্টা ঘুম, সেলফ স্টাডি, কাজ ও ক্লাসের সম্পূর্ণ অনুপাত",
+        chart2Title: "দিনভিত্তিক লোড বিশ্লেষণ",
+        chart2Sub: "সোম থেকে রবিবার প্রতিদিনের কার্যভারের তুলনামূলক গ্রাফ",
+        notesTitle: "আজকের আত্মমূল্যায়ন নোট",
+        notesSavedStatus: "অটো-সেভ সক্রিয়",
+        notesPlaceholder: "আজকের দিনটি কেমন কাটল? অ্যালগরিদম বা ল্যাবে কী শিখলেন? এখানে লিখে রাখুন...",
+        saveBtn: "সেভ করুন",
+        toastText: "নোট সফলভাবে সংরক্ষিত হয়েছে!",
+        noTaskActive: "বিশ্রাম / আনসিডিউলড ব্যক্তিগত সময়",
+        noTaskDesc: "বর্তমানে কোনো ভারী শিফট নেই। রিল্যাক্স করুন বা পরের কাজের জন্য প্রস্তুত হোন।",
+        chartLabels: {
+          sleep: "ঘুম (৫৬ ঘ.)",
+          study: "সেলফ স্টাডি (২৮ ঘ.)",
+          work: "জব শিফট (২৯ ঘ.)",
+          class: "ভার্সিটি ক্লাস (৮.৫ ঘ.)",
+          travel: "যাতায়াত (১১.৫ ঘ.)",
+          cook: "মিল প্রেপ (৬ ঘ.)",
+          personal: "ব্যক্তিগত ও মিলস (২৯ ঘ.)",
+          barStudy: "সেলফ স্টাডি (ঘণ্টা)",
+          barWork: "কাজের শিফট (ঘণ্টা)",
+          barClass: "ভার্সিটি ক্লাস (ঘণ্টা)"
+        },
+        days: ["রবি", "সোম", "মঙ্গল", "বুধ", "বৃহস্পতি", "শুক্র", "শনি"],
+        daysFull: ["রবিবার", "সোমবার", "মঙ্গলবার", "বুধবার", "বৃহস্পতিবার", "শুক্রবার", "শনিবার"]
+      },
+      en: {
+        userName: "Md Tamim Sifatullah",
+        roleTitle: "Computer Science & Engineering (1st Year) • Dorm Resident",
+        location: "Saint Petersburg, Russia",
+        sleepBadge: "Strict 8H Deep Sleep Daily",
+        mealBadge: "3-Day Batch Meal Prep",
+        liveTag: "ACTIVE SHIFT MONITOR (LIVE)",
+        nextShiftLabel: "NEXT UPCOMING",
+        cardSleepLabel: "Sleep (8h/Day)",
+        cardSleepSub: "Guaranteed 100% Recovery",
+        cardStudyLabel: "Self-Study",
+        cardStudySub: "Algorithms & Coding",
+        cardWorkLabel: "Job Shift",
+        cardWorkSub: "Tue, Sat & Sun",
+        cardClassLabel: "Uni Classes",
+        cardClassSub: "Tue, Thu, Fri",
+        cardTravelLabel: "Commute",
+        cardTravelSub: "Dorm ↔ Uni / Work",
+        cardCookLabel: "Meal Prep",
+        cardCookSub: "3-Day Home Cooking",
+        checklistHeading: "Daily Follow-up & Checklist",
+        checklistSubtitle: "Check completed tasks (Auto-saved locally)",
+        resetBtn: "Reset",
+        doneLabel: "DONE",
+        timelineHeaderTitle: "24-Hour Detailed Timeline",
+        timelineHeaderSub: "Structured schedule breakdown",
+        sessionCountSuffix: " Sessions",
+        chart1Title: "168-Hour Weekly Allocation",
+        chart1Sub: "Mathematically balanced 8H sleep, study, job & classes",
+        chart2Title: "Day-by-Day Load Analysis",
+        chart2Sub: "Comparison of Study vs Work vs Classes across the week",
+        notesTitle: "Daily Reflection & Accountability Note",
+        notesSavedStatus: "Auto-save Enabled",
+        notesPlaceholder: "How did today go? Any DSA problem or code breakthrough? Jot it down...",
+        saveBtn: "Save Note",
+        toastText: "Reflection saved successfully!",
+        noTaskActive: "Relaxation / Free Buffer Window",
+        noTaskDesc: "No active intensive shifts right now. Recharging mental energy.",
+        chartLabels: {
+          sleep: "Sleep (56h)",
+          study: "Self-Study (28h)",
+          work: "Job Shifts (29h)",
+          class: "Uni Classes (8.5h)",
+          travel: "Commute (11.5h)",
+          cook: "Meal Prep (6h)",
+          personal: "Personal & Meals (29h)",
+          barStudy: "Self-Study (Hrs)",
+          barWork: "Job Shifts (Hrs)",
+          barClass: "Uni Classes (Hrs)"
+        },
+        days: ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"],
+        daysFull: ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"]
+      },
+      ru: {
+        userName: "Сифатулла Мд Тамим",
+        roleTitle: "Компьютерные науки (1 курс) • Проживание в общежитии",
+        location: "Санкт-Петербург, Россия",
+        sleepBadge: "Строго 8 часов сна ежедневно",
+        mealBadge: "Приготовление еды (3 дня)",
+        liveTag: "МОНИТОРИНГ СМЕНЫ В РЕАЛЬНОМ ВРЕМЕНИ",
+        nextShiftLabel: "СЛЕДУЮЩЕЕ ДЕЙСТВИЕ",
+        cardSleepLabel: "Сон (8 ч./день)",
+        cardSleepSub: "100% Восстановление",
+        cardStudyLabel: "Самообучение",
+        cardStudySub: "Алгоритмы и программирование",
+        cardWorkLabel: "Рабочая смена",
+        cardWorkSub: "Вт, Сб и Вс",
+        cardClassLabel: "Пары в вузе",
+        cardClassSub: "Вт, Чт, Пт",
+        cardTravelLabel: "Дорога",
+        cardTravelSub: "Общежитие ↔ Вуз/Работа",
+        cardCookLabel: "Готовка еды",
+        cardCookSub: "3 дня в неделю (Meal Prep)",
+        checklistHeading: "Ежедневный трекер задач",
+        checklistSubtitle: "Отмечайте выполненное (сохраняется в браузере)",
+        resetBtn: "Сброс",
+        doneLabel: "ВЫПОЛНЕНО",
+        timelineHeaderTitle: "Подробный 24-часовой график",
+        timelineHeaderSub: "Распределение времени по блокам",
+        sessionCountSuffix: " сессий",
+        chart1Title: "Распределение 168 часов в неделю",
+        chart1Sub: "Сбалансированный сон (8 ч.), учеба, работа и пары",
+        chart2Title: "Анализ дневной нагрузки",
+        chart2Sub: "Сравнение учебы, работы и пар с понедельника по воскресенье",
+        notesTitle: "Ежедневный самоотчет и заметки",
+        notesSavedStatus: "Автосохранение активно",
+        notesPlaceholder: "Как прошел день? Какие темы по программированию освоили? Запишите...",
+        saveBtn: "Сохранить",
+        toastText: "Заметка успешно сохранена!",
+        noTaskActive: "Отдых / Свободное время",
+        noTaskDesc: "Сейчас нет запланированных смен. Время для отдыха.",
+        chartLabels: {
+          sleep: "Сон (56 ч.)",
+          study: "Самообучение (28 ч.)",
+          work: "Работа (29 ч.)",
+          class: "Пары (8.5 ч.)",
+          travel: "Дорога (11.5 ч.)",
+          cook: "Готовка (6 ч.)",
+          personal: "Личное время (29 ч.)",
+          barStudy: "Самообучение (ч.)",
+          barWork: "Работа (ч.)",
+          barClass: "Пары (ч.)"
+        },
+        days: ["Вс", "Пн", "Вт", "Ср", "Чт", "Пт", "Сб"],
+        daysFull: ["Воскресенье", "Понедельник", "Вторник", "Среда", "Четверг", "Пятница", "Суббота"]
+      }
+    };
+
+    /* Complete 7-Day Schedule with 8-hour sleep precision and full multilingual descriptions */
+    const scheduleDatabase = {
+      1: {
+        theme: {
+          bn: "অফ ডে — ডিপ সেলফ স্টাডি ও মিল প্রেপ (রান্না ১)",
+          en: "Day Off — Deep Self-Study & Meal Prep (Day 1)",
+          ru: "Выходной — Учеба и готовка еды (День 1)"
+        },
+        items: [
+          {
+            id: "mon_1", start: "00:30", end: "08:30", type: "sleep",
+            label: { bn: "ঘুম (৮ ঘণ্টা)", en: "Deep Sleep (8 Hours)", ru: "Сон (8 часов)" },
+            desc: { bn: "পরিপূর্ণ শারীরিক ও ব্রেন রিকভারি", en: "Full physical and neurological recharge", ru: "Полное восстановление сил и мозга" }
+          },
+          {
+            id: "mon_2", start: "08:30", end: "09:30", type: "routine",
+            label: { bn: "সকালের রুটিন ও নাশতা", en: "Morning Routine & Breakfast", ru: "Утренний распорядок и завтрак" },
+            desc: { bn: "ফ্রেশ হওয়া, পুষ্টিকর নাশতা ও চা", en: "Shower, nutritious breakfast & hydration", ru: "Душ, питательный завтрак и чай" }
+          },
+          {
+            id: "mon_3", start: "09:30", end: "13:30", type: "study",
+            label: { bn: "ডিপ স্টাডি ব্লক ১ (৪ ঘণ্টা)", en: "Deep Study Block 1 (4h)", ru: "Блок учебы 1 (4 часа)" },
+            desc: { bn: "ম্যাথমেটিক্স, অ্যালগরিদম ও কোর সিএস থিওরি", en: "Calculus, Discrete Math & DSA", ru: "Дискретная математика, алгоритмы и теория" }
+          },
+          {
+            id: "mon_4", start: "13:30", end: "15:30", type: "cook",
+            label: { bn: "মিল প্রেপ ও লাঞ্চ (রান্না দিন ১)", en: "Meal Prep & Lunch (Cooking 1)", ru: "Готовка еды и обед (День 1)" },
+            desc: { bn: "আগামী ২ দিনের স্বাস্থ্যকর রান্না ও দুপুরের খাবার", en: "Cooking 2 days of balanced meals + lunch", ru: "Приготовление еды на 2 дня вперед и обед" }
+          },
+          {
+            id: "mon_5", start: "15:30", end: "18:00", type: "study",
+            label: { bn: "ডিপ স্টাডি ব্লক ২ (২.৫ ঘণ্টা)", en: "Deep Study Block 2 (2.5h)", ru: "Блок учебы 2 (2.5 часа)" },
+            desc: { bn: "ল্যাব প্র্যাকটিস ও লেকচার নোট রিভিশন", en: "Lab assignments and lecture reviews", ru: "Лабораторные работы и конспекты лекций" }
+          },
+          {
+            id: "mon_6", start: "18:00", end: "19:30", type: "break",
+            label: { bn: "ব্যক্তিগত সময় ও আউটডোর", en: "Personal Break & Walk", ru: "Прогулка и личное время" },
+            desc: { bn: "মাইন্ড রিফ্রেশ, হালকা হাঁটা বা পরিবারে কথা বলা", en: "Outdoor brisk walk, calling home & rest", ru: "Свежий воздух, звонок семье и отдых" }
+          },
+          {
+            id: "mon_7", start: "19:30", end: "22:30", type: "study",
+            label: { bn: "হ্যান্ডস-অন কোডিং (৩ ঘণ্টা)", en: "Hands-on Coding (3h)", ru: "Практика программирования (3 часа)" },
+            desc: { bn: "প্রোগ্রামিং ল্যাঙ্গুয়েজ ও গিটহাব প্রজেক্ট", en: "C++/Python coding and building projects", ru: "Написание кода на C++/Python, проекты на GitHub" }
+          },
+          {
+            id: "mon_8", start: "22:30", end: "23:30", type: "break",
+            label: { bn: "রাতের খাবার ও রিল্যাক্স", en: "Dinner & Wind Down", ru: "Ужин и вечерний отдых" },
+            desc: { bn: "শান্ত পরিবেশে ডিনার সম্পন্ন করা", en: "Healthy dinner & mental relaxation", ru: "Спокойный ужин и расслабление" }
+          },
+          {
+            id: "mon_9", start: "23:30", end: "00:30", type: "routine",
+            label: { bn: "পরের দিনের প্রস্তুতি ও রুটিন", en: "Night Routine & Day Review", ru: "Подготовка ко сну и следующему дню" },
+            desc: { bn: "স্ক্রিন বন্ধ করে ঘুমানোর প্রস্তুতি", en: "Shut down blue light, review tomorrow's plan", ru: "Отключение экранов, план на завтра" }
+          }
+        ]
+      },
+      2: {
+        theme: {
+          bn: "ক্লাস ৩:৩০-৫:০০ + জব শিফট ৬:০০-১১:০০",
+          en: "Class 3:30-5:00 PM + Job Shift 6:00-11:00 PM",
+          ru: "Пара 15:30-17:00 + Работа 18:00-23:00"
+        },
+        items: [
+          {
+            id: "tue_1", start: "00:30", end: "08:30", type: "sleep",
+            label: { bn: "ঘুম (৮ ঘণ্টা)", en: "Deep Sleep (8 Hours)", ru: "Сон (8 часов)" },
+            desc: { bn: "৮ ঘণ্টার পরিপূর্ণ ঘুম", en: "Strict 8 hours of restorative sleep", ru: "8 часов глубокого сна" }
+          },
+          {
+            id: "tue_2", start: "08:30", end: "09:30", type: "routine",
+            label: { bn: "সকালের রুটিন ও নাশতা", en: "Morning Routine & Breakfast", ru: "Утренний распорядок и завтрак" },
+            desc: { bn: "ফ্রেশ হওয়া ও পুষ্টিকর খাবার গ্রহণ", en: "Fresh start and healthy morning meal", ru: "Утренний туалет и завтрак" }
+          },
+          {
+            id: "tue_3", start: "09:30", end: "13:30", type: "study",
+            label: { bn: "সেলফ স্টাডি ব্লক (৪ ঘণ্টা)", en: "Self-Study Block (4h)", ru: "Самообучение (4 часа)" },
+            desc: { bn: "ক্লাসের পূর্বপ্রস্তুতি ও প্রবলেম সলভিং", en: "Pre-class preparation and problem solving", ru: "Подготовка к паре и решение задач" }
+          },
+          {
+            id: "tue_4", start: "13:30", end: "14:30", type: "break",
+            label: { bn: "লাঞ্চ ও ব্যাগ গোছানো", en: "Lunch & Gear Packing", ru: "Обед и сборы вещей" },
+            desc: { bn: "খাবার খাওয়া এবং ক্লাস ও জবের ব্যাগ গোছানো", en: "Pack prepped food for uni & work shift", ru: "Обед и упаковка контейнеров с едой" }
+          },
+          {
+            id: "tue_5", start: "14:30", end: "15:30", type: "travel",
+            label: { bn: "ভার্সিটিতে যাতায়াত (১ ঘণ্টা)", en: "Commute to University (1h)", ru: "Дорога в университет (1 час)" },
+            desc: { bn: "ডর্ম থেকে ক্যাম্পাসে ভ্রমণ", en: "Dorm to Campus (Audio lectures on transit)", ru: "Общежитие ↔ Университет" }
+          },
+          {
+            id: "tue_6", start: "15:30", end: "17:00", type: "class",
+            label: { bn: "বিশ্ববিদ্যালয় ক্লাস (১.৫ ঘণ্টা)", en: "University Class (1.5h)", ru: "Пара в университете (1.5 ч.)" },
+            desc: { bn: "লেকচার ও ল্যাব ক্লাস সেশন", en: "Academic lecture & practical discussion", ru: "Лекция или практическое занятие" }
+          },
+          {
+            id: "tue_7", start: "17:00", end: "18:00", type: "travel",
+            label: { bn: "কাজের উদ্দেশ্যে যাতায়াত (১ ঘণ্টা)", en: "Commute to Work Shift (1h)", ru: "Дорога на работу (1 час)" },
+            desc: { bn: "ভার্সিটি থেকে সোজা কাজের জায়গায় যাত্রা", en: "Direct commute from campus to work venue", ru: "Из университета прямо на работу" }
+          },
+          {
+            id: "tue_8", start: "18:00", end: "23:00", type: "work",
+            label: { bn: "কাজের শিফট (৫ ঘণ্টা)", en: "Work Shift (5 Hours)", ru: "Рабочая смена (5 часов)" },
+            desc: { bn: "রেস্তোরাঁ জব রেসপন্সিবিলিটি পালন", en: "Restaurant work shift responsibilities", ru: "Смена на работе в ресторане" }
+          },
+          {
+            id: "tue_9", start: "23:00", end: "24:00", type: "travel",
+            label: { bn: "ডর্মে ফেরা (১ ঘণ্টা)", en: "Commute back to Dorm (1h)", ru: "Возвращение в общежитие (1 час)" },
+            desc: { bn: "কাজ শেষে ডর্মে যাতায়াত", en: "Night transit from work to dorm", ru: "Дорога с работы в общежитие" }
+          },
+          {
+            id: "tue_10", start: "24:00", end: "00:30", type: "routine",
+            label: { bn: "ফ্রেশ হওয়া ও ঘুমের প্রস্তুতি", en: "Night Refresh & Wind Down", ru: "Душ и подготовка ко сну" },
+            desc: { bn: "হালকা খাবার, গোসল ও বিছানায় যাওয়া", en: "Shower, light snack, and into bed", ru: "Теплый душ, легкий перекус и сон" }
+          }
+        ]
+      },
+      3: {
+        theme: {
+          bn: "অফ ডে — সেলফ স্টাডি ও মিল প্রেপ (রান্না ২)",
+          en: "Day Off — Self-Study & Meal Prep (Day 2)",
+          ru: "Выходной — Учеба и готовка еды (День 2)"
+        },
+        items: [
+          {
+            id: "wed_1", start: "00:30", end: "08:30", type: "sleep",
+            label: { bn: "ঘুম (৮ ঘণ্টা)", en: "Deep Sleep (8 Hours)", ru: "Сон (8 часов)" },
+            desc: { bn: "৮ ঘণ্টার পূর্ণ রিকভারি", en: "Strict 8-hour neuro-recovery", ru: "Полноценный 8-часовой сон" }
+          },
+          {
+            id: "wed_2", start: "08:30", end: "09:30", type: "routine",
+            label: { bn: "সকালের রুটিন ও নাশতা", en: "Morning Routine & Breakfast", ru: "Утренний распорядок и завтрак" },
+            desc: { bn: "ফ্রেশ হওয়া ও প্রস্তুতি", en: "Hydration, stretching and breakfast", ru: "Зарядка, умывание и завтрак" }
+          },
+          {
+            id: "wed_3", start: "09:30", end: "13:30", type: "study",
+            label: { bn: "ডিপ স্টাডি ব্লক ১ (৪ ঘণ্টা)", en: "Deep Study Block 1 (4h)", ru: "Блок учебы 1 (4 часа)" },
+            desc: { bn: "অ্যাসাইনমেন্ট ও ডাটা স্ট্রাকচার প্র্যাকটিস", en: "Data structures & programming problems", ru: "Структуры данных и домашние задания" }
+          },
+          {
+            id: "wed_4", start: "13:30", end: "15:30", type: "cook",
+            label: { bn: "মিল প্রেপ ও লাঞ্চ (রান্না দিন ২)", en: "Meal Prep & Lunch (Cooking 2)", ru: "Готовка еды и обед (День 2)" },
+            desc: { bn: "পরবর্তী ২ দিনের পুষ্টিকর রান্না ও লাঞ্চ", en: "Healthy cooking batch 2 + midday meal", ru: "Вторая партия готовки еды и обед" }
+          },
+          {
+            id: "wed_5", start: "15:30", end: "18:00", type: "study",
+            label: { bn: "ডিপ স্টাডি ব্লক ২ (২.৫ ঘণ্টা)", en: "Deep Study Block 2 (2.5h)", ru: "Блок учебы 2 (2.5 часа)" },
+            desc: { bn: "সিএস প্রজেক্ট ইমপ্লিমেন্টেশন", en: "Project architecture & development", ru: "Разработка курсового/учебного проекта" }
+          },
+          {
+            id: "wed_6", start: "18:00", end: "19:30", type: "break",
+            label: { bn: "ব্যক্তিগত সময় ও বিশ্রাম", en: "Rest & Outdoor Break", ru: "Отдых и личное время" },
+            desc: { bn: "মাইন্ড রিফ্রেশ ও হাঁটাচলা", en: "Mental recharge and stroll", ru: "Прогулка на улице и отдых" }
+          },
+          {
+            id: "wed_7", start: "19:30", end: "22:30", type: "study",
+            label: { bn: "কোডিং প্র্যাকটিস (৩ ঘণ্টা)", en: "Coding Practice (3h)", ru: "Практика кода (3 часа)" },
+            desc: { bn: "অ্যালগরিদম সমস্যা সমাধান ও কোডিং", en: "LeetCode / Problem-solving drills", ru: "Решение задач по программированию" }
+          },
+          {
+            id: "wed_8", start: "22:30", end: "23:30", type: "break",
+            label: { bn: "রাতের খাবার ও ডিনার", en: "Dinner & Chill", ru: "Ужин и отдых" },
+            desc: { bn: "ডিনার সম্পন্ন করা ও হালকা বিশ্রাম", en: "Warm dinner & unwinding", ru: "Ужин и спокойное времяпрепровождение" }
+          },
+          {
+            id: "wed_9", start: "23:30", end: "00:30", type: "routine",
+            label: { bn: "উইন্ড ডাউন ও ঘুম প্রস্তুতি", en: "Wind Down & Sleep Prep", ru: "Подготовка ко сну" },
+            desc: { bn: "শান্ত পরিবেশে ঘুমানোর প্রস্তুতি", en: "Journaling, review, lights out by 00:30", ru: "Подведение итогов дня и отход ко сну" }
+          }
+        ]
+      },
+      4: {
+        theme: {
+          bn: "সেলফ স্টাডি + মিল প্রেপ + সান্ধ্যকালীন ক্লাস ৬:৫০-১১:০০",
+          en: "Study + Meal Prep (3) + Night Class 6:50-11:00 PM",
+          ru: "Учеба + Готовка (3) + Вечерняя пара 18:50-23:00"
+        },
+        items: [
+          {
+            id: "thu_1", start: "00:30", end: "08:30", type: "sleep",
+            label: { bn: "ঘুম (৮ ঘণ্টা)", en: "Deep Sleep (8 Hours)", ru: "Сон (8 часов)" },
+            desc: { bn: "পর্যাপ্ত ৮ ঘণ্টা ঘুম নিশ্চিত করা", en: "Full 8 hours sleep guaranteed", ru: "8 часов непрерывного сна" }
+          },
+          {
+            id: "thu_2", start: "08:30", end: "09:30", type: "routine",
+            label: { bn: "সকালের রুটিন ও নাশতা", en: "Morning Routine & Breakfast", ru: "Утренний распорядок и завтрак" },
+            desc: { bn: "নাশতা ও দিনের প্ল্যানিং", en: "Breakfast and daily schedule check", ru: "Завтрак и проверка расписания" }
+          },
+          {
+            id: "thu_3", start: "09:30", end: "13:30", type: "study",
+            label: { bn: "সেলফ স্টাডি ব্লক (৪ ঘণ্টা)", en: "Self-Study Block (4h)", ru: "Самообучение (4 часа)" },
+            desc: { bn: "কোর সিএস কনসেপ্ট ও অ্যাসাইনমেন্ট", en: "Core CS topics & university assignments", ru: "Основные темы CS и задания" }
+          },
+          {
+            id: "thu_4", start: "13:30", end: "15:30", type: "cook",
+            label: { bn: "মিল প্রেপ (রান্না দিন ৩ - উইকেন্ড মিল)", en: "Meal Prep (Day 3 - Weekend Batch)", ru: "Готовка еды (День 3 - на выходные)" },
+            desc: { bn: "শনি ও রবিবারের কাজের জন্য খাবার তৈরি", en: "Batch cook for busy Saturday & Sunday shifts", ru: "Приготовление еды на рабочие выходные" }
+          },
+          {
+            id: "thu_5", start: "15:30", end: "17:30", type: "study",
+            label: { bn: "ক্লাস প্রিপারেশন স্টাডি (২ ঘণ্টা)", en: "Pre-Class Study (2h)", ru: "Подготовка к вечерней паре (2 ч.)" },
+            desc: { bn: "সন্ধ্যার ক্লাসের টপিক পূর্ব-পাঠ", en: "Review materials for the 4-hour night class", ru: "Чтение материалов к вечерней паре" }
+          },
+          {
+            id: "thu_6", start: "17:30", end: "18:50", type: "travel",
+            label: { bn: "ভার্সিটিতে যাতায়াত (১ ঘণ্টা ২০ মি.)", en: "Commute to Campus (1h 20m)", ru: "Дорога в университет (1 ч. 20 мин.)" },
+            desc: { bn: "ডর্ম থেকে ক্যাম্পাসে ভ্রমণ", en: "Travel from dorm to university lecture halls", ru: "Поездка из общежития на пары" }
+          },
+          {
+            id: "thu_7", start: "18:50", end: "23:00", type: "class",
+            label: { bn: "বিশ্ববিদ্যালয় ক্লাস (৪ ঘণ্টা ১০ মি.)", en: "University Night Class (4h 10m)", ru: "Вечерние пары в вузе (4 ч. 10 мин.)" },
+            desc: { bn: "সন্ধ্যার দীর্ঘ ইনটেনসিভ ক্লাস সেশন", en: "Long intensive evening academic session", ru: "Длинная вечерняя учебная смена" }
+          },
+          {
+            id: "thu_8", start: "23:00", end: "24:00", type: "travel",
+            label: { bn: "ডর্মে ফেরা (১ ঘণ্টা)", en: "Commute back to Dorm (1h)", ru: "Дорога в общежитие (1 час)" },
+            desc: { bn: "ক্যাম্পাস থেকে ডর্মে যাতায়াত", en: "Night travel back to dorm", ru: "Возвращение с учебы в общежитие" }
+          },
+          {
+            id: "thu_9", start: "24:00", end: "00:30", type: "routine",
+            label: { bn: "হালকা ডিনার ও ফ্রেশ হওয়া", en: "Night Snack & Sleep Prep", ru: "Легкий ужин и подготовка ко сну" },
+            desc: { bn: "বিছানায় যাওয়ার প্রস্তুতি", en: "Quick shower and wind down for 00:30 sleep", ru: "Быстрый душ и сон в 00:30" }
+          }
+        ]
+      },
+      5: {
+        theme: {
+          bn: "২টি ক্লাস + লাইব্রেরি স্টাডি (শনিবারের কাজের জন্য ২৩:৩০ এ ঘুম)",
+          en: "2 Classes + Library Study (Early Sleep 23:30 for Saturday)",
+          ru: "2 пары + Библиотека (Сон в 23:30 перед субботой)"
+        },
+        items: [
+          {
+            id: "fri_1", start: "00:30", end: "08:30", type: "sleep",
+            label: { bn: "ঘুম (৮ ঘণ্টা)", en: "Deep Sleep (8 Hours)", ru: "Сон (8 часов)" },
+            desc: { bn: "পর্যাপ্ত ৮ ঘণ্টা ঘুম", en: "Quality 8-hour sleep cycle", ru: "8 часов качественного сна" }
+          },
+          {
+            id: "fri_2", start: "08:30", end: "10:15", type: "study",
+            label: { bn: "হালকা স্টাডি ও ক্লাসের প্রস্তুতি", en: "Morning Study & Review (1h 45m)", ru: "Утренняя учеба и повторение" },
+            desc: { bn: "দিনের ক্লাসের রিডিং দেখা", en: "Reviewing slides and concepts for Friday classes", ru: "Просмотр слайдов и подготовка к паре" }
+          },
+          {
+            id: "fri_3", start: "10:15", end: "11:15", type: "travel",
+            label: { bn: "ভার্সিটিতে যাতায়াত (১ ঘণ্টা)", en: "Commute to Campus (1h)", ru: "Дорога в университет (1 час)" },
+            desc: { bn: "ডর্ম থেকে ক্যাম্পাসে যাওয়া", en: "Commute from dorm to campus", ru: "Поездка из общежития в университет" }
+          },
+          {
+            id: "fri_4", start: "11:30", end: "13:00", type: "class",
+            label: { bn: "বিশ্ববিদ্যালয় ক্লাস ১ (১.৫ ঘণ্টা)", en: "University Class 1 (1.5h)", ru: "Пара 1 (1.5 часа)" },
+            desc: { bn: "সকালের প্রথম ক্লাস সেশন", en: "Morning lecture / practical session", ru: "Утренняя лекция / семинар" }
+          },
+          {
+            id: "fri_5", start: "13:00", end: "14:00", type: "break",
+            label: { bn: "লাঞ্চ ব্রেক", en: "Lunch Break at Campus", ru: "Обед в кампусе" },
+            desc: { bn: "ক্যাম্পাসে মধ্যাহ্নভোজ ও বিশ্রাম", en: "Healthy lunch with course-mates", ru: "Обед и отдых в университете" }
+          },
+          {
+            id: "fri_6", start: "14:00", end: "17:00", type: "study",
+            label: { bn: "ক্যাম্পাস লাইব্রেরি স্টাডি (৩ ঘণ্টা)", en: "Library Deep Study (3 Hours)", ru: "Учеба в библиотеке (3 часа)" },
+            desc: { bn: "দুই ক্লাসের গ্যাপে নিবিড় পড়াশোনা ও অ্যাসাইনমেন্ট", en: "Deep distraction-free library work between classes", ru: "Продуктивная учеба в библиотеке вуза" }
+          },
+          {
+            id: "fri_7", start: "17:10", end: "18:30", type: "class",
+            label: { bn: "বিশ্ববিদ্যালয় ক্লাস ২ (১ ঘণ্টা ২০ মি.)", en: "University Class 2 (1h 20m)", ru: "Пара 2 (1 ч. 20 мин.)" },
+            desc: { bn: "দ্বিতীয় ক্লাস সেশন সম্পন্ন করা", en: "Second afternoon academic lecture", ru: "Вторая учебная пара" }
+          },
+          {
+            id: "fri_8", start: "18:30", end: "19:30", type: "travel",
+            label: { bn: "ডর্মে ফেরা (১ ঘণ্টা)", en: "Commute back to Dorm (1h)", ru: "Дорога в общежитие (1 час)" },
+            desc: { bn: "ক্যাম্পাস থেকে ডর্মে ফেরা", en: "Travel back to dormitory", ru: "Возвращение с учебы в общежитие" }
+          },
+          {
+            id: "fri_9", start: "19:30", end: "22:00", type: "break",
+            label: { bn: "রিল্যাক্সেশন ও ডিনার", en: "Dinner & Friday Wind Down", ru: "Ужин и вечерний отдых" },
+            desc: { bn: "উইকেন্ডের কাজের পূর্বে বিশ্রাম", en: "Nutritious dinner and mental rest", ru: "Вкусный ужин и отдых" }
+          },
+          {
+            id: "fri_10", start: "22:00", end: "23:30", type: "routine",
+            label: { bn: "শনিবারের কাজের প্রস্তুতি", en: "Saturday Shift Preparation", ru: "Подготовка к субботней смене" },
+            desc: { bn: "ইউনিফর্ম ও প্রস্তুত করা খাবার গোছানো", en: "Pack meals, uniform, setup alarm for 07:30", ru: "Сбор формы и контейнеров с едой" }
+          },
+          {
+            id: "fri_11", start: "23:30", end: "07:30", type: "sleep",
+            label: { bn: "ঘুম (৮ ঘণ্টা — ২৩:৩০ থেকে ৭:৩০)", en: "Sleep (8h — 23:30 to 07:30)", ru: "Сон (8 ч. — с 23:30 до 07:30)" },
+            desc: { bn: "শনিবার সকালে কাজের শিফট থাকায় সময়মতো ঘুম", en: "Early 8h sleep for the 10:00 AM Saturday shift", ru: "8 часов сна перед субботней сменой" }
+          }
+        ]
+      },
+      6: {
+        theme: {
+          bn: "কাজের শিফট ১০:০০ AM - ৮:০০ PM (১০ ঘণ্টা)",
+          en: "Work Shift 10:00 AM - 8:00 PM (10 Hours)",
+          ru: "Рабочая смена с 10:00 до 20:00 (10 часов)"
+        },
+        items: [
+          {
+            id: "sat_1", start: "23:30", end: "07:30", type: "sleep",
+            label: { bn: "ঘুম (৮ ঘণ্টা)", en: "Sleep (8 Hours)", ru: "Сон (8 часов)" },
+            desc: { bn: "শুক্রবার রাত ১১:৩০ থেকে সকাল ৭:৩০ পর্যন্ত", en: "Full 8 hours recovery from 23:30 to 07:30", ru: "С 23:30 до 07:30 — полные 8 часов сна" }
+          },
+          {
+            id: "sat_2", start: "07:30", end: "08:45", type: "routine",
+            label: { bn: "সকালের রুটিন ও পুষ্টিকর নাশতা", en: "Breakfast & Work Readiness", ru: "Завтрак и сборы на работу" },
+            desc: { bn: "কাজের জন্য পুরোপুরি প্রস্তুত হওয়া ও খাবার প্যাক", en: "Hearty breakfast, hydration and gear ready", ru: "Сытный завтрак и готовность к смене" }
+          },
+          {
+            id: "sat_3", start: "08:45", end: "09:45", type: "travel",
+            label: { bn: "কাজে যাতায়াত (১ ঘণ্টা)", en: "Commute to Work (1h)", ru: "Дорога на работу (1 час)" },
+            desc: { bn: "ডর্ম থেকে কর্মস্থলে যাত্রা (১০:০০ AM শুরু)", en: "Travel to workplace to arrive on time", ru: "Поездка из общежития на работу" }
+          },
+          {
+            id: "sat_4", start: "10:00", end: "20:00", type: "work",
+            label: { bn: "কাজের শিফট (১০ ঘণ্টা)", en: "Work Shift (10 Hours)", ru: "Рабочая смена (10 часов)" },
+            desc: { bn: "রেস্তোরাঁয় সক্রিয় দায়িত্ব পালন", en: "Active execution of job responsibilities", ru: "Работа в ресторане (10 часов)" }
+          },
+          {
+            id: "sat_5", start: "20:00", end: "21:00", type: "travel",
+            label: { bn: "ডর্মে ফেরা (১ ঘণ্টা)", en: "Commute back to Dorm (1h)", ru: "Дорога в общежитие (1 час)" },
+            desc: { bn: "কাজ শেষে ডর্মে যাতায়াত", en: "Transit back to dormitory", ru: "Возвращение с работы в общежитие" }
+          },
+          {
+            id: "sat_6", start: "21:00", end: "22:00", type: "break",
+            label: { bn: "গোসল, ফ্রেশ হওয়া ও ডিনার", en: "Shower, Warm Dinner & Rest", ru: "Душ, горячий ужин и отдых" },
+            desc: { bn: "পুষ্টিকর খাবার ও শারীরিক ক্লান্তি দূর করা", en: "Replenishing nutrients and muscle relaxation", ru: "Восстановление сил и плотный ужин" }
+          },
+          {
+            id: "sat_7", start: "22:00", end: "23:00", type: "routine",
+            label: { bn: "রবিবারের প্রস্তুতি ও উইন্ড ডাউন", en: "Sunday Prep & Wind Down", ru: "Подготовка к воскресенью" },
+            desc: { bn: "রবিবার সকাল ৯টায় কাজ থাকায় দ্রুত শোয়া", en: "Pack for Sunday morning 9:00 AM shift", ru: "Подготовка к смене в 09:00 утра" }
+          },
+          {
+            id: "sat_8", start: "23:00", end: "07:00", type: "sleep",
+            label: { bn: "ঘুম (৮ ঘণ্টা — ২৩:০০ থেকে ৭:০০)", en: "Sleep (8h — 23:00 to 07:00)", ru: "Сон (8 ч. — с 23:00 до 07:00)" },
+            desc: { bn: "রাত ১১:০০ থেকে সকাল ৭:০০ পর্যন্ত ৮ ঘণ্টা ঘুম", en: "Strict 8h sleep before long Sunday shift", ru: "8 часов сна перед длинной сменой" }
+          }
+        ]
+      },
+      0: {
+        theme: {
+          bn: "লং কাজের শিফট ৯:০০ AM - ১১:০০ PM (১৪ ঘণ্টা)",
+          en: "Long Work Shift 9:00 AM - 11:00 PM (14 Hours)",
+          ru: "Длинная смена с 09:00 до 23:00 (14 часов)"
+        },
+        items: [
+          {
+            id: "sun_1", start: "23:00", end: "07:00", type: "sleep",
+            label: { bn: "ঘুম (৮ ঘণ্টা)", en: "Sleep (8 Hours)", ru: "Сон (8 часов)" },
+            desc: { bn: "শনিবার রাত ১১:০০ থেকে সকাল ৭:০০", en: "Full 8 hours sleep prior to long shift", ru: "8 часов сна перед длинным днем" }
+          },
+          {
+            id: "sun_2", start: "07:00", end: "07:45", type: "routine",
+            label: { bn: "দ্রুত নাশতা ও রেডি হওয়া", en: "Breakfast & Shift Gear", ru: "Завтрак и быстрая готовность" },
+            desc: { bn: "রান্না করা খাবার সাথে নেওয়া", en: "Grab prepped meals and hydration", ru: "Завтрак и сбор готовых контейнеров" }
+          },
+          {
+            id: "sun_3", start: "07:45", end: "08:45", type: "travel",
+            label: { bn: "কাজে যাতায়াত (১ ঘণ্টা)", en: "Commute to Work (1h)", ru: "Дорога на работу (1 час)" },
+            desc: { bn: "ডর্ম থেকে কর্মস্থলে পৌঁছানো", en: "Travel to workplace for 9:00 AM kickoff", ru: "Поездка на работу к началу смены" }
+          },
+          {
+            id: "sun_4", start: "09:00", end: "23:00", type: "work",
+            label: { bn: "লং কাজের শিফট (১৪ ঘণ্টা)", en: "Long Work Shift (14 Hours)", ru: "Длинная смена (14 часов)" },
+            desc: { bn: "রেস্তোরাঁর পুরো দিনের দায়িত্ব পালন", en: "Executing marathon weekend service duties", ru: "Работа в ресторане на длинной смене" }
+          },
+          {
+            id: "sun_5", start: "23:00", end: "24:00", type: "travel",
+            label: { bn: "ডর্মে ফেরা (১ ঘণ্টা)", en: "Commute back to Dorm (1h)", ru: "Дорога в общежитие (1 час)" },
+            desc: { bn: "কাজ শেষে ডর্মে ফেরা", en: "Late night return travel to dorm", ru: "Позднее возвращение в общежитие" }
+          },
+          {
+            id: "sun_6", start: "24:00", end: "00:30", type: "routine",
+            label: { bn: "ফ্রেশ হওয়া ও বিছানায় যাওয়া", en: "Warm Shower & Sleep Prep", ru: "Теплый душ и отход ко сну" },
+            desc: { bn: "সোমবার অফ ডে থাকায় নিশ্চিন্ত ঘুম (০০:৩০ থেকে ০৮:৩০)", en: "Relax knowing Monday is completely off", ru: "Спокойный отход ко сну, впереди выходной" }
+          }
+        ]
+      }
+    };
+
+    /* Visual Metadata for Category Styles */
+    const categoryStyles = {
+      sleep: { icon: "fa-bed", bg: "bg-indigo-950/40 border-indigo-500/40 text-indigo-300", badge: "bg-indigo-500/20 text-indigo-300 border-indigo-500/30" },
+      study: { icon: "fa-laptop-code", bg: "bg-emerald-950/40 border-emerald-500/40 text-emerald-300", badge: "bg-emerald-500/20 text-emerald-300 border-emerald-500/30" },
+      class: { icon: "fa-graduation-cap", bg: "bg-amber-950/40 border-amber-500/40 text-amber-300", badge: "bg-amber-500/20 text-amber-300 border-amber-500/30" },
+      work: { icon: "fa-briefcase", bg: "bg-rose-950/40 border-rose-500/40 text-rose-300", badge: "bg-rose-500/20 text-rose-300 border-rose-500/30" },
+      travel: { icon: "fa-bus", bg: "bg-sky-950/40 border-sky-500/40 text-sky-300", badge: "bg-sky-500/20 text-sky-300 border-sky-500/30" },
+      cook: { icon: "fa-kitchen-set", bg: "bg-purple-950/40 border-purple-500/40 text-purple-300", badge: "bg-purple-500/20 text-purple-300 border-purple-500/30" },
+      routine: { icon: "fa-shower", bg: "bg-slate-900 border-slate-700/60 text-slate-300", badge: "bg-slate-800 text-slate-300 border-slate-700" },
+      break: { icon: "fa-mug-hot", bg: "bg-teal-950/40 border-teal-500/40 text-teal-300", badge: "bg-teal-500/20 text-teal-300 border-teal-500/30" }
+    };
+
+    /* Global Application State */
+    let currentLang = localStorage.getItem('tamim_lang') || 'bn';
+    let selectedDay = new Date().getDay();
+    let doughnutChartInstance = null;
+    let barChartInstance = null;
+
+    function setLanguage(lang) {
+      currentLang = lang;
+      localStorage.setItem('tamim_lang', lang);
+
+      // Update button styling
+      ['bn', 'en', 'ru'].forEach(l => {
+        const btn = document.getElementById(`btnLang${l.charAt(0).toUpperCase() + l.slice(1)}`);
+        if (l === lang) {
+          btn.className = "px-3.5 py-1.5 rounded-xl text-xs font-bold transition flex items-center gap-1.5 bg-emerald-500 text-slate-950 shadow-md";
+        } else {
+          btn.className = "px-3.5 py-1.5 rounded-xl text-xs font-semibold text-slate-400 hover:text-white transition flex items-center gap-1.5";
+        }
+      });
+
+      const t = translations[lang];
+
+      // Update static UI text
+      document.getElementById('uiUserName').textContent = t.userName;
+      document.getElementById('uiRoleTitle').textContent = t.roleTitle;
+      document.getElementById('uiLocation').textContent = t.location;
+      document.getElementById('uiSleepBadge').textContent = t.sleepBadge;
+      document.getElementById('uiMealBadge').textContent = t.mealBadge;
+      document.getElementById('uiLiveTag').textContent = t.liveTag;
+      document.getElementById('uiNextShiftLabel').textContent = t.nextShiftLabel;
+      
+      // Stat cards
+      document.getElementById('cardSleepLabel').textContent = t.cardSleepLabel;
+      document.getElementById('cardSleepSub').textContent = t.cardSleepSub;
+      document.getElementById('cardStudyLabel').textContent = t.cardStudyLabel;
+      document.getElementById('cardStudySub').textContent = t.cardStudySub;
+      document.getElementById('cardWorkLabel').textContent = t.cardWorkLabel;
+      document.getElementById('cardWorkSub').textContent = t.cardWorkSub;
+      document.getElementById('cardClassLabel').textContent = t.cardClassLabel;
+      document.getElementById('cardClassSub').textContent = t.cardClassSub;
+      document.getElementById('cardTravelLabel').textContent = t.cardTravelLabel;
+      document.getElementById('cardTravelSub').textContent = t.cardTravelSub;
+      document.getElementById('cardCookLabel').textContent = t.cardCookLabel;
+      document.getElementById('cardCookSub').textContent = t.cardCookSub;
+
+      // Section titles
+      document.getElementById('uiChecklistHeading').innerHTML = `<i class="fa-solid fa-list-check text-emerald-400"></i> ${t.checklistHeading}`;
+      document.getElementById('uiChecklistSubtitle').textContent = t.checklistSubtitle;
+      document.getElementById('uiResetBtn').innerHTML = `<i class="fa-solid fa-rotate-left mr-1"></i> ${t.resetBtn}`;
+      document.getElementById('uiDoneLabel').textContent = t.doneLabel;
+      document.getElementById('timelineHeaderTitle').textContent = t.timelineHeaderTitle;
+      document.getElementById('timelineHeaderSub').textContent = t.timelineHeaderSub;
+
+      document.getElementById('chart1Title').innerHTML = `<i class="fa-solid fa-chart-pie text-cyan-400"></i> ${t.chart1Title}`;
+      document.getElementById('chart1Sub').textContent = t.chart1Sub;
+      document.getElementById('chart2Title').innerHTML = `<i class="fa-solid fa-chart-simple text-amber-400"></i> ${t.chart2Title}`;
+      document.getElementById('chart2Sub').textContent = t.chart2Sub;
+
+      document.getElementById('uiNotesTitle').innerHTML = `<i class="fa-solid fa-pen-fancy text-emerald-400"></i> ${t.notesTitle}`;
+      document.getElementById('uiNotesSavedStatus').textContent = t.notesSavedStatus;
+      document.getElementById('dailyNotesInput').placeholder = t.notesPlaceholder;
+      document.getElementById('uiSaveBtn').textContent = t.saveBtn;
+      document.getElementById('uiToastText').textContent = t.toastText;
+
+      // Re-render components
+      renderDayTabs();
+      renderChecklist();
+      renderTimeline();
+      updateChartsLanguage();
+      evaluateLiveShift();
+      updateClock();
+    }
+
+    function renderDayTabs() {
+      const container = document.getElementById('dayTabsContainer');
+      container.innerHTML = "";
+      const t = translations[currentLang];
+
+      // Custom ordered day tabs: Mon(1), Tue(2), Wed(3), Thu(4), Fri(5), Sat(6), Sun(0)
+      const orderedDays = [1, 2, 3, 4, 5, 6, 0];
+
+      orderedDays.forEach(dayIndex => {
+        const isSelected = (dayIndex === selectedDay);
+        const btn = document.createElement('button');
+        btn.onclick = () => switchActiveDay(dayIndex);
+        
+        let label = t.days[dayIndex];
+        let sub = "";
+        if (dayIndex === 1 || dayIndex === 3) sub = (currentLang === 'bn' ? "অফ" : currentLang === 'ru' ? "Вых" : "Off");
+        else if (dayIndex === 2) sub = (currentLang === 'bn' ? "ক্লাস+জব" : currentLang === 'ru' ? "Пара+Работа" : "Class+Job");
+        else if (dayIndex === 4) sub = (currentLang === 'bn' ? "ক্লাস" : currentLang === 'ru' ? "Пара" : "Class");
+        else if (dayIndex === 5) sub = (currentLang === 'bn' ? "২ ক্লাস" : currentLang === 'ru' ? "2 Пары" : "2 Classes");
+        else if (dayIndex === 6) sub = (currentLang === 'bn' ? "কাজ" : currentLang === 'ru' ? "Смена" : "Work");
+        else if (dayIndex === 0) sub = (currentLang === 'bn' ? "লং কাজ" : currentLang === 'ru' ? "14ч Смена" : "Long Shift");
+
+        if (isSelected) {
+          btn.className = "px-4 py-2 rounded-xl text-xs sm:text-sm font-bold bg-emerald-500 text-slate-950 shadow-lg shadow-emerald-500/25 transition flex items-center gap-1.5";
+        } else {
+          btn.className = "px-4 py-2 rounded-xl text-xs sm:text-sm font-semibold text-slate-400 hover:text-white bg-slate-900/80 hover:bg-slate-800 transition flex items-center gap-1.5 border border-slate-800/60";
+        }
+
+        btn.innerHTML = `<span>${label}</span> <span class="text-[10px] opacity-80 font-normal px-1.5 py-0.5 rounded ${isSelected ? 'bg-black/20 text-slate-950' : 'bg-slate-800 text-slate-300'}">${sub}</span>`;
+        container.appendChild(btn);
+      });
+    }
+
+    function switchActiveDay(dayIndex) {
+      selectedDay = dayIndex;
+      renderDayTabs();
+      renderChecklist();
+      renderTimeline();
+      loadDayNote();
+    }
+
+    /* Convert HH:MM into total minutes from midnight */
+    function timeToMinutes(tStr) {
+      const [h, m] = tStr.split(':').map(Number);
+      return h * 60 + m;
+    }
+
+    function evaluateLiveShift() {
+      const now = new Date();
+      const todayIndex = now.getDay();
+      const currentMin = now.getHours() * 60 + now.getMinutes();
+      const dayData = scheduleDatabase[todayIndex]?.items || [];
+      const t = translations[currentLang];
+
+      let activeTask = null;
+      let nextTask = null;
+
+      for (let i = 0; i < dayData.length; i++) {
+        const item = dayData[i];
+        const startM = timeToMinutes(item.start);
+        const endM = timeToMinutes(item.end);
+
+        let isCurrent = false;
+        if (startM <= endM) {
+          isCurrent = currentMin >= startM && currentMin < endM;
+        } else {
+          // Crosses midnight (e.g. 23:30 to 07:30)
+          isCurrent = currentMin >= startM || currentMin < endM;
+        }
+
+        if (isCurrent) {
+          activeTask = item;
+          nextTask = dayData[(i + 1) % dayData.length];
+          break;
+        }
+      }
+
+      if (activeTask) {
+        document.getElementById('currentTaskTitle').textContent = `${activeTask.label[currentLang]} (${activeTask.start} – ${activeTask.end})`;
+        document.getElementById('currentTaskDetails').textContent = activeTask.desc[currentLang];
+      } else {
+        document.getElementById('currentTaskTitle').textContent = t.noTaskActive;
+        document.getElementById('currentTaskDetails').textContent = t.noTaskDesc;
+      }
+
+      if (nextTask) {
+        document.getElementById('nextTaskTitle').textContent = nextTask.label[currentLang];
+        document.getElementById('nextTaskTime').textContent = `${nextTask.start} – ${nextTask.end}`;
+      } else {
+        document.getElementById('nextTaskTitle').textContent = "-";
+        document.getElementById('nextTaskTime').textContent = "-";
+      }
+    }
+
+    function getStoredChecks() {
+      try {
+        const data = localStorage.getItem('tamim_os_checks_v2');
+        return data ? JSON.parse(data) : {};
+      } catch (e) {
+        return {};
+      }
+    }
+
+    function saveCheckStatus(taskId, isChecked) {
+      const checks = getStoredChecks();
+      checks[taskId] = isChecked;
+      localStorage.setItem('tamim_os_checks_v2', JSON.stringify(checks));
+      updateProgress();
+    }
+
+    function resetDayChecks() {
+      const checks = getStoredChecks();
+      const currentItems = scheduleDatabase[selectedDay]?.items || [];
+      currentItems.forEach(item => {
+        delete checks[item.id];
+      });
+      localStorage.setItem('tamim_os_checks_v2', JSON.stringify(checks));
+      renderChecklist();
+    }
+
+    function renderChecklist() {
+      const container = document.getElementById('checklistItemsList');
+      container.innerHTML = "";
+      const currentItems = scheduleDatabase[selectedDay]?.items || [];
+      const stored = getStoredChecks();
+
+      currentItems.forEach(item => {
+        const isChecked = !!stored[item.id];
+        const style = categoryStyles[item.type] || categoryStyles.routine;
+
+        const row = document.createElement('div');
+        row.className = "flex items-center justify-between p-3 rounded-2xl bg-slate-900/90 border border-slate-800/80 hover:border-slate-700 transition group";
+        
+        row.innerHTML = `
+          <label class="flex items-center gap-3.5 cursor-pointer select-none flex-1">
+            <input type="checkbox" data-id="${item.id}" ${isChecked ? 'checked' : ''} 
+                   onchange="handleCheckChange(this)"
+                   class="w-5 h-5 rounded-lg text-emerald-500 bg-slate-950 border-slate-700 focus:ring-0 accent-emerald-500 cursor-pointer transition">
+            <div>
+              <span class="text-xs sm:text-sm font-semibold transition ${isChecked ? 'line-through text-slate-500' : 'text-slate-100 group-hover:text-emerald-400'}">
+                ${item.label[currentLang]}
+              </span>
+              <p class="text-[11px] ${isChecked ? 'line-through text-slate-600' : 'text-slate-400'}">${item.desc[currentLang]}</p>
+            </div>
+          </label>
+          <span class="mono text-xs font-semibold px-2.5 py-1 rounded-xl bg-slate-950 border border-slate-800 text-slate-300 ml-3">
+            ${item.start} - ${item.end}
+          </span>
+        `;
+        container.appendChild(row);
+      });
+
+      updateProgress();
+    }
+
+    function handleCheckChange(cb) {
+      const taskId = cb.getAttribute('data-id');
+      const isChecked = cb.checked;
+      saveCheckStatus(taskId, isChecked);
+      renderChecklist();
+    }
+
+    function updateProgress() {
+      const currentItems = scheduleDatabase[selectedDay]?.items || [];
+      const stored = getStoredChecks();
+      let completed = 0;
+      currentItems.forEach(it => {
+        if (stored[it.id]) completed++;
+      });
+
+      const total = currentItems.length;
+      const pct = total > 0 ? Math.round((completed / total) * 100) : 0;
+
+      document.getElementById('progressPercentBadge').textContent = `${pct}%`;
+      document.getElementById('progressBarFill').style.width = `${pct}%`;
+    }
+
+    function renderTimeline() {
+      const container = document.getElementById('timelineCardsList');
+      container.innerHTML = "";
+      const currentItems = scheduleDatabase[selectedDay]?.items || [];
+      const t = translations[currentLang];
+
+      document.getElementById('timelineItemCount').textContent = `${currentItems.length} ${t.sessionCountSuffix}`;
+
+      currentItems.forEach(item => {
+        const meta = categoryStyles[item.type] || categoryStyles.routine;
+
+        const card = document.createElement('div');
+        card.className = `p-4 rounded-2xl border ${meta.bg} transition-all hover:translate-x-1 duration-200`;
+
+        card.innerHTML = `
+          <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-2">
+            <div class="flex items-center gap-3">
+              <span class="mono text-xs font-bold px-3 py-1.5 rounded-xl bg-black/40 border border-white/10 text-white">
+                ${item.start} - ${item.end}
+              </span>
+              <div class="flex items-center gap-2">
+                <i class="fa-solid ${meta.icon} text-sm"></i>
+                <h4 class="font-bold text-white text-sm sm:text-base">${item.label[currentLang]}</h4>
+              </div>
+            </div>
+            <span class="text-[11px] uppercase tracking-wider font-extrabold px-2.5 py-0.5 rounded-full border ${meta.badge} self-start sm:self-auto">
+              ${item.type}
+            </span>
+          </div>
+          <p class="text-xs text-slate-300 mt-2 font-medium pl-1">
+            ${item.desc[currentLang]}
+          </p>
+        `;
+        container.appendChild(card);
+      });
+    }
+
+    function saveDailyNote() {
+      const note = document.getElementById('dailyNotesInput').value;
+      localStorage.setItem(`tamim_note_day_${selectedDay}`, note);
+      
+      const toast = document.getElementById('toastMessage');
+      toast.classList.remove('opacity-0');
+      toast.classList.add('opacity-100');
+      setTimeout(() => {
+        toast.classList.remove('opacity-100');
+        toast.classList.add('opacity-0');
+      }, 2500);
+    }
+
+    function loadDayNote() {
+      const saved = localStorage.getItem(`tamim_note_day_${selectedDay}`) || "";
+      document.getElementById('dailyNotesInput').value = saved;
+    }
+
+    /* Avatar management & image fallback */
+    function triggerAvatarUpload() {
+      document.getElementById('avatarFileInput').click();
+    }
+
+    function uploadCustomAvatar(event) {
+      const file = event.target.files[0];
+      if (file) {
+        const reader = new FileReader();
+        reader.onload = function(e) {
+          const imgBase64 = e.target.result;
+          document.getElementById('userAvatar').src = imgBase64;
+          localStorage.setItem('tamim_avatar_custom', imgBase64);
+        };
+        reader.readAsDataURL(file);
+      }
+    }
+
+    function handleImageFallback(imgElement) {
+      // In case 2.jpg is not in directory, check localStorage or use stylish default
+      const stored = localStorage.getItem('tamim_avatar_custom');
+      if (stored) {
+        imgElement.src = stored;
+      } else {
+        imgElement.src = "https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&w=400&q=80";
+      }
+    }
+
+    function initCharts() {
+      const t = translations[currentLang];
+
+      // 1. Weekly 168-Hour Distribution (Doughnut)
+      const dCtx = document.getElementById('weeklyDistributionCanvas').getContext('2d');
+      doughnutChartInstance = new Chart(dCtx, {
+        type: 'doughnut',
+        data: {
+          labels: [
+            t.chartLabels.sleep,
+            t.chartLabels.study,
+            t.chartLabels.work,
+            t.chartLabels.class,
+            t.chartLabels.travel,
+            t.chartLabels.cook,
+            t.chartLabels.personal
+          ],
+          datasets: [{
+            data: [56, 28, 29, 8.5, 11.5, 6, 29],
+            backgroundColor: [
+              '#6366f1', // Indigo (Sleep 56h)
+              '#10b981', // Emerald (Study 28h)
+              '#f43f5e', // Rose (Work 29h)
+              '#f59e0b', // Amber (Class 8.5h)
+              '#0284c7', // Sky (Travel 11.5h)
+              '#a855f7', // Purple (Cooking 6h)
+              '#475569'  // Slate (Meals & personal buffer 29h)
+            ],
+            borderWidth: 3,
+            borderColor: '#070b14',
+            hoverOffset: 6
+          }]
+        },
+        options: {
+          responsive: true,
+          maintainAspectRatio: false,
+          plugins: {
+            legend: {
+              position: 'bottom',
+              labels: {
+                color: '#94a3b8',
+                font: { family: 'Plus Jakarta Sans', size: 10 },
+                boxWidth: 10,
+                padding: 10
+              }
+            },
+            tooltip: {
+              callbacks: {
+                label: function(context) {
+                  return ` ${context.label}: ${context.raw} hrs`;
+                }
+              }
+            }
+          },
+          cutout: '66%'
+        }
+      });
+
+      // 2. Day-by-Day Load (Bar Chart)
+      const bCtx = document.getElementById('dailyLoadCanvas').getContext('2d');
+      barChartInstance = new Chart(bCtx, {
+        type: 'bar',
+        data: {
+          labels: [t.days[1], t.days[2], t.days[3], t.days[4], t.days[5], t.days[6], t.days[0]],
+          datasets: [
+            {
+              label: t.chartLabels.barStudy,
+              data: [9.5, 4.0, 9.5, 6.0, 4.5, 0.0, 0.0],
+              backgroundColor: '#10b981',
+              borderRadius: 6
+            },
+            {
+              label: t.chartLabels.barWork,
+              data: [0.0, 5.0, 0.0, 0.0, 0.0, 10.0, 14.0],
+              backgroundColor: '#f43f5e',
+              borderRadius: 6
+            },
+            {
+              label: t.chartLabels.barClass,
+              data: [0.0, 1.5, 0.0, 4.1, 2.8, 0.0, 0.0],
+              backgroundColor: '#f59e0b',
+              borderRadius: 6
+            }
+          ]
+        },
+        options: {
+          responsive: true,
+          maintainAspectRatio: false,
+          scales: {
+            x: {
+              stacked: true,
+              ticks: { color: '#94a3b8', font: { family: 'Plus Jakarta Sans', size: 11 } },
+              grid: { display: false }
+            },
+            y: {
+              stacked: true,
+              ticks: { color: '#94a3b8', font: { family: 'JetBrains Mono', size: 10 } },
+              grid: { color: 'rgba(255, 255, 255, 0.05)' }
+            }
+          },
+          plugins: {
+            legend: {
+              position: 'bottom',
+              labels: {
+                color: '#94a3b8',
+                font: { family: 'Plus Jakarta Sans', size: 10 },
+                boxWidth: 8
+              }
+            }
+          }
+        }
+      });
+    }
+
+    function updateChartsLanguage() {
+      if (!doughnutChartInstance || !barChartInstance) return;
+      const t = translations[currentLang];
+
+      // Update doughnut labels
+      doughnutChartInstance.data.labels = [
+        t.chartLabels.sleep,
+        t.chartLabels.study,
+        t.chartLabels.work,
+        t.chartLabels.class,
+        t.chartLabels.travel,
+        t.chartLabels.cook,
+        t.chartLabels.personal
+      ];
+      doughnutChartInstance.update();
+
+      // Update bar labels
+      barChartInstance.data.labels = [t.days[1], t.days[2], t.days[3], t.days[4], t.days[5], t.days[6], t.days[0]];
+      barChartInstance.data.datasets[0].label = t.chartLabels.barStudy;
+      barChartInstance.data.datasets[1].label = t.chartLabels.barWork;
+      barChartInstance.data.datasets[2].label = t.chartLabels.barClass;
+      barChartInstance.update();
+    }
+
+    function updateClock() {
+      const now = new Date();
+      const hrs = String(now.getHours()).padStart(2, '0');
+      const mins = String(now.getMinutes()).padStart(2, '0');
+      const secs = String(now.getSeconds()).padStart(2, '0');
+      document.getElementById('liveClockDisplay').textContent = `${hrs}:${mins}:${secs}`;
+
+      const t = translations[currentLang];
+      const dayName = t.daysFull[now.getDay()];
+      
+      let dateString = `${dayName}, ${now.getDate()}`;
+      if (currentLang === 'bn') {
+        dateString += ` ${now.toLocaleString('bn-BD', { month: 'long' })}`;
+      } else if (currentLang === 'ru') {
+        dateString += ` ${now.toLocaleString('ru-RU', { month: 'long' })}`;
+      } else {
+        dateString += ` ${now.toLocaleString('en-US', { month: 'short' })}`;
+      }
+
+      document.getElementById('liveDateDisplay').textContent = dateString;
+    }
+
+    // App Initialization on DOM Ready
+    window.addEventListener('DOMContentLoaded', () => {
+      // Check for custom stored avatar
+      const customAvatar = localStorage.getItem('tamim_avatar_custom');
+      if (customAvatar) {
+        document.getElementById('userAvatar').src = customAvatar;
+      }
+
+      initCharts();
+      setLanguage(currentLang);
+      loadDayNote();
+      
+      // Real-time timers
+      updateClock();
+      evaluateLiveShift();
+      setInterval(updateClock, 1000);
+      setInterval(evaluateLiveShift, 30000); // Check shift change every 30s
+    });
+  </script>
+</body>
+</html>
